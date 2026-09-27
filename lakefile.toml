@@ -1,0 +1,9 @@
+name = "X509"
+defaultTargets = ["X509", "x509"]
+
+[[lean_lib]]
+name = "X509"
+
+[[lean_exe]]
+name = "x509"
+root = "Main"
