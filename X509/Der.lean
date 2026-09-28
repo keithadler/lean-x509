@@ -151,13 +151,13 @@ theorem beF_fuel : ∀ (f g n : Nat), n ≤ f → n ≤ g → beF f n = beF g n 
     | succ g =>
       by_cases h : n = 0
       · simp [beF, h]
-      · simp only [beF, h, if_false]; rw [ih g (n / 256) (by omega) (by omega)]
+      · simp only [beF, h, ite_false]; rw [ih g (n / 256) (by omega) (by omega)]
 
 theorem be_zero : be 0 = [] := by simp [be, beF]
 
 theorem be_pos {n : Nat} (h : n ≠ 0) : be n = be (n / 256) ++ [n % 256] := by
   obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
-  simp only [be, beF, Nat.add_one_ne_zero, if_false]
+  simp only [be, beF, Nat.add_one_ne_zero, ite_false]
   rw [beF_fuel m ((m + 1) / 256) ((m + 1) / 256) (by omega) (by omega)]
 
 theorem ofBE_be (n : Nat) : ofBE (be n) = n := by
@@ -364,7 +364,7 @@ theorem parseSeq_encodeSeq : ∀ (f : Nat) (ns : List Node),
         obtain ⟨⟨ht, hc⟩, hlen⟩ := hx
         simp only [encodeSeq, encode, List.cons_append, List.append_assoc, parseSeq, ht, ite_true,
           parseLen_encodeLen _ _ hlen]
-        rw [List.length_append, if_pos (Nat.le_add_right _ _)]
+        simp only [List.length_append, Nat.le_add_right, ite_true]
         simp only [List.take_left', List.drop_left', hc, Bool.false_eq_true, ite_false]
         simp only [encodeSeq, encode, List.length_cons, List.length_append] at hl
         rw [ih xs hxs (by omega)]
@@ -373,7 +373,7 @@ theorem parseSeq_encodeSeq : ∀ (f : Nat) (ns : List Node),
         obtain ⟨⟨⟨ht, hc⟩, hcs⟩, hlen⟩ := hx
         simp only [encodeSeq, encode, List.cons_append, List.append_assoc, parseSeq, ht, ite_true,
           parseLen_encodeLen _ _ hlen]
-        rw [List.length_append, if_pos (Nat.le_add_right _ _)]
+        simp only [List.length_append, Nat.le_add_right, ite_true]
         simp only [List.take_left', List.drop_left', hc, ite_true]
         simp only [encodeSeq, encode, List.length_cons, List.length_append] at hl
         rw [ih cs hcs (by omega), ih xs hxs (by omega)]
@@ -408,5 +408,34 @@ theorem der_unique {bs₁ bs₂ : List Nat} {x : Node} (h₁ : parse bs₁ = som
 /-- A parsed tree is always one the encoder can write back and the parser read again. -/
 theorem parse_wf {bs : List Nat} {x : Node} (h : parse bs = some x) : parse (encode x) = some x := by
   rw [← encode_parse h]; exact h
+
+/-! ## Refusals, checked by the kernel
+
+The theorems above say the parser accepts exactly the DER encodings. These are the classic ways of
+writing a value wrong, each refused. -/
+
+/-- A long-form length (`0x81 0x01`) where one byte (`0x01`) fits. -/
+theorem refuses_long_form : (parse [0x02, 0x81, 0x01, 0x05]).isNone = true := by decide +kernel
+
+/-- A length with a leading zero byte. -/
+theorem refuses_zero_padded_length : (parse [0x02, 0x82, 0x00, 0x01, 0x05]).isNone = true := by
+  decide +kernel
+
+/-- BER's indefinite length, `0x80`, ended by two zero bytes. -/
+theorem refuses_indefinite : (parse [0x30, 0x80, 0x02, 0x01, 0x05, 0x00, 0x00]).isNone = true := by
+  decide +kernel
+
+/-- A byte after the value. -/
+theorem refuses_trailing : (parse [0x02, 0x01, 0x05, 0x00]).isNone = true := by decide +kernel
+
+/-- The reserved length octet `0xFF`. -/
+theorem refuses_reserved_length : (parse ([0x04, 0xFF] ++ List.replicate 127 1)).isNone = true := by
+  decide +kernel
+
+/-- The escape `0x1F` that starts a multi-byte tag number is never read as a tag of its own. -/
+theorem refuses_tag_escape : (parse [0x1F, 0x01, 0x05]).isNone = true := by decide +kernel
+
+/-- The same value written the one right way is read. -/
+theorem accepts_der : (parse [0x02, 0x01, 0x05]).isSome = true := by decide +kernel
 
 end X509

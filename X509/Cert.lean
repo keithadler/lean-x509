@@ -191,7 +191,7 @@ def decodeValidity : Node → Option (Nat × Nat)
   | _ => none
 
 /-- Everything after the version: the fields common to v1 and v3. -/
-def decodeTbsBody (tbs : Node) (version : Nat) (serial sigAlg issuer validity subject spki : Node)
+def decodeTbsBody (version : Nat) (serial sigAlg issuer validity subject spki : Node)
     (extNodes : List Node) : Option (Cert × Node) := do
   let .prim 0x02 sn := serial | none
   if sn.length > 20 || !minimalInt sn then none
@@ -215,11 +215,11 @@ def decodeTbs (tbs : Node) : Option (Cert × Node) :=
   match tbs with
   | .cons 0x30 [.cons 0xA0 [.prim 0x02 [2]], serial, alg, iss, val, sub, spki,
       .cons 0xA3 [.cons 0x30 (e :: es)]] =>
-    decodeTbsBody tbs 2 serial alg iss val sub spki (e :: es)
+    decodeTbsBody 2 serial alg iss val sub spki (e :: es)
   | .cons 0x30 [.cons 0xA0 [.prim 0x02 [2]], serial, alg, iss, val, sub, spki] =>
-    decodeTbsBody tbs 2 serial alg iss val sub spki []
+    decodeTbsBody 2 serial alg iss val sub spki []
   | .cons 0x30 [serial, alg, iss, val, sub, spki] =>
-    decodeTbsBody tbs 0 serial alg iss val sub spki []
+    decodeTbsBody 0 serial alg iss val sub spki []
   | _ => none
 
 /-- Reads a certificate from its DER bytes. -/

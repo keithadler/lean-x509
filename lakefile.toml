@@ -3,6 +3,7 @@ defaultTargets = ["X509", "x509"]
 
 [[lean_lib]]
 name = "X509"
+roots = ["X509", "X509.Widget"]
 
 [[lean_exe]]
 name = "x509"

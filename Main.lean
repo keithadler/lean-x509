@@ -7,6 +7,10 @@ import Lean.Data.Json
     x509 show FILE.der ...                 one JSON line per certificate, or {"file":…,"reject":…}
     x509 validate HOST NOW ANCHOR.der CHAIN.der ...
                                            prints true or false
+    x509 sweep                             flips the lowest bit of each byte of the real leaf in turn,
+                                           validates the chain again, and prints one outcome per byte:
+                                           0 not DER, 1 decoder refuses, 2 signature fails,
+                                           3 host or usage fails, 4 another check fails, 5 valid
 -/
 
 open X509 Lean
@@ -60,6 +64,27 @@ def main (args : List String) : IO UInt32 := do
       | none => false
     IO.println ok
     pure 0
+  | ["sweep"] =>
+    let host := Real.host "keithadler.github.io"
+    let rest := [Data.yr1, Data.rootYR].filterMap decodeCert
+    let yr1Key := match rest with
+      | yr1 :: _ => match yr1.key with | .rsa k => some k | .other _ => none
+      | [] => none
+    let leaf := Data.leaf
+    let outcomes := (List.range leaf.length).map fun i =>
+      let bs := leaf.set i (leaf[i]! ^^^ 1)
+      match parse bs with
+      | none => 0
+      | some _ =>
+        match decodeCert bs with
+        | none => 1
+        | some c =>
+          if !(yr1Key.map (signedBy · c) |>.getD false) then 2
+          else if validate Real.anchors Real.now host (c :: rest) then 5
+          else if !(namesB host [c]) then 3
+          else 4
+    IO.println (toJson outcomes).compress
+    pure (if outcomes.contains 5 then 1 else 0)
   | _ =>
     IO.eprintln "usage: x509 show FILE.der ... | x509 validate HOST NOW ANCHOR.der CHAIN.der ..."
     pure 2

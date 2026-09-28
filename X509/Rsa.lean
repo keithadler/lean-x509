@@ -63,16 +63,16 @@ theorem powMod_eq : ∀ (f m b e : Nat), e < 2 ^ f → powMod m f b e = b ^ e % 
     simp only [powMod]
     by_cases he : e = 0
     · subst he; simp
-    · simp only [he, if_false]
+    · simp only [he, ite_false]
       rw [ih m (b * b % m) (e / 2) (by rw [Nat.pow_succ] at h; omega)]
       rw [← Nat.pow_mod, ← Nat.pow_two, ← Nat.pow_mul]
       have hdiv := Nat.div_add_mod e 2
       by_cases hodd : e % 2 = 1
-      · simp only [hodd, if_true]
+      · simp only [hodd, ite_true]
         conv => rhs; rw [← hdiv, hodd]
         rw [Nat.pow_add, Nat.pow_one, Nat.mul_mod, Nat.mod_mod, ← Nat.mul_mod, Nat.mul_comm, Nat.mul_comm 2]
       · have h0 : e % 2 = 0 := by omega
-        simp only [hodd, if_false]
+        simp only [hodd, ite_false]
         conv => rhs; rw [← hdiv, h0]
         rw [Nat.add_zero, Nat.mul_comm 2]
 

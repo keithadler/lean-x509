@@ -59,7 +59,7 @@ theorem decodeUInt_encodeUInt (n : Nat) : decodeUInt (encodeUInt n) = some n := 
           simp only [decodeUInt, hlt, hb0, false_and, not_false_eq_true, hall', and_self, ite_true, hofbe]
       · simp only [hlt, ite_false]
         have hall0 : (0 :: b :: bs).all (· < 256) = true := by simp at hall' ⊢; exact hall'
-        simp only [decodeUInt, show (0 : Nat) < 128 by omega, true_and, show ¬ b < 128 from hlt, and_false,
+        simp only [decodeUInt, show (0 : Nat) < 128 by omega, show ¬ b < 128 from hlt, and_false,
           not_false_eq_true, hall0, and_self, ite_true, ofBE_cons_zero, hofbe]
 
 /-- Every integer the reader accepts is written exactly the way `encodeUInt` writes it. -/

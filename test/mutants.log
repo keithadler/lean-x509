@@ -1,0 +1,28 @@
+[ 0] long-form length accepted for a length below 128           killed by a proof (Der.lean)
+[ 1] length bytes with a leading zero accepted                  killed by a proof (Der.lean)
+[ 2] trailing bytes after the certificate ignored               killed by a proof (Der.lean)
+[ 3] multi-byte tag escape 0x1F read as an ordinary tag         killed by a proof (Der.lean)
+[ 4] INTEGER with a redundant leading zero accepted             killed by a proof (Prim.lean)
+[ 5] BOOLEAN TRUE accepted as 0x01                              killed by a proof (Prim.lean)
+[ 6] GeneralizedTime accepted before 2050                       killed by a proof (Prim.lean)
+[ 7] February 29 in every year                                  killed by a proof (Prim.lean)
+[ 8] one SHA-256 round constant wrong                           killed by a proof (Sha256.lean)
+[ 9] signature not required to be below the modulus             killed by a proof (Rsa.lean)
+[10] padding block type 0x02 instead of 0x01                    killed by a proof (Real.lean)
+[11] wildcard allowed over a single remaining label (*.com)     killed by a proof (Host.lean)
+[12] host labels not restricted to letters, digits and hyphens  killed by a proof (Host.lean)
+[13] wildcard matching any number of labels                     killed by a proof (Host.lean)
+[14] critical FALSE written out accepted                        killed by test/negative.py
+[15] the same extension allowed twice                           killed by test/negative.py
+[16] unknown critical extensions ignored                        killed by test/negative.py
+[17] inner and outer signature algorithms not compared          killed by test/negative.py
+[18] OIDs not checked for padding                               killed by test/negative.py
+[19] issuer not required to be a CA                             killed by a proof (Chain.lean)
+[20] issuer name not compared                                   killed by a proof (Chain.lean)
+[21] expiry not checked                                         killed by a proof (Chain.lean)
+[22] path length off by one                                     killed by a proof (Chain.lean)
+[23] keyCertSign not required of issuers                        killed by a proof (Chain.lean)
+[24] leaf's extKeyUsage ignored                                 killed by a proof (Chain.lean)
+
+25/25 mutants killed
+(mutant 3 re-run after refuses_tag_escape was added: python3 test/mutants.py 3)
