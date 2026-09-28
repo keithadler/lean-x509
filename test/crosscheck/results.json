@@ -372,7 +372,7 @@
    "anchor": "root.der",
    "host": "test.example",
    "expect": "reject",
-   "rule": "RFC 9525 \u00a76.3: a wildcard is the whole leftmost label"
+   "rule": "RFC 9525 \u00a76.3: a partial-label wildcard MUST be ignored (RFC 6125, replaced in 2023, allowed it)"
   },
   {
    "id": "host-wildcard-tld",
@@ -522,7 +522,7 @@
    }
   },
   "OpenSSL": {
-   "version": "OpenSSL 3.6.3 9 Jun 2026 (Library: OpenSSL 3.6.3 9 Jun 2026)",
+   "version": "OpenSSL 3.6.4 25 Aug 2026 (Library: OpenSSL 3.6.4 25 Aug 2026)",
    "verdicts": {
     "valid": {
      "ok": true,
@@ -1715,6 +1715,405 @@
     "host-wildcard-tld": {
      "ok": false,
      "err": "\u201ctest.example\u201d certificate name does not match input"
+    }
+   }
+  },
+  "Java": {
+   "version": "OpenJDK 27 (PKIX CertPathValidator)",
+   "verdicts": {
+    "valid": {
+     "ok": true,
+     "err": null
+    },
+    "valid-www": {
+     "ok": true,
+     "err": null
+    },
+    "valid-wildcard": {
+     "ok": true,
+     "err": null
+    },
+    "der-long-length": {
+     "ok": true,
+     "err": null
+    },
+    "der-length-leading-zero": {
+     "ok": true,
+     "err": null
+    },
+    "der-indefinite-length": {
+     "ok": true,
+     "err": null
+    },
+    "der-integer-padding": {
+     "ok": true,
+     "err": null
+    },
+    "der-boolean-01": {
+     "ok": true,
+     "err": null
+    },
+    "der-default-false-written": {
+     "ok": true,
+     "err": null
+    },
+    "der-high-tag-for-low": {
+     "ok": false,
+     "err": "CertificateParsingException: java.io.IOException: Tag number over 30 at 13 is not supported"
+    },
+    "der-oid-padding": {
+     "ok": false,
+     "err": "CertificateParsingException: java.io.IOException: ObjectIdentifier() -- Invalid DER encoding, useless extra octet detected"
+    },
+    "rfc-generalizedtime-2026": {
+     "ok": true,
+     "err": null
+    },
+    "rfc-february-30": {
+     "ok": true,
+     "err": null
+    },
+    "der-trailing-in-extension": {
+     "ok": false,
+     "err": "CertificateParsingException: java.io.IOException: extra data at the end"
+    },
+    "der-trailing-byte": {
+     "ok": true,
+     "err": null
+    },
+    "der-outer-length-leading-zero": {
+     "ok": true,
+     "err": null
+    },
+    "der-outer-indefinite": {
+     "ok": true,
+     "err": null
+    },
+    "rfc-outer-algorithm-differs": {
+     "ok": true,
+     "err": null
+    },
+    "path-unknown-critical-extension": {
+     "ok": false,
+     "err": "CertPathValidatorException: unrecognized critical extension(s)"
+    },
+    "path-duplicate-extension": {
+     "ok": false,
+     "err": "CertificateParsingException: java.io.IOException: Duplicate extensions not allowed"
+    },
+    "path-leaf-as-ca": {
+     "ok": false,
+     "err": "CertPathValidatorException: CA key usage check failed: keyCertSign bit is not set"
+    },
+    "path-length-exceeded": {
+     "ok": false,
+     "err": "CertPathValidatorException: basic constraints check failed: pathLenConstraint violated - this cert must be the last cert in the certification path"
+    },
+    "path-issuer-without-keycertsign": {
+     "ok": false,
+     "err": "CertPathValidatorException: CA key usage check failed: keyCertSign bit is not set"
+    },
+    "path-expired-intermediate": {
+     "ok": false,
+     "err": "CertPathValidatorException: validity check failed"
+    },
+    "path-leaf-not-yet-valid": {
+     "ok": false,
+     "err": "CertPathValidatorException: validity check failed"
+    },
+    "path-client-only-eku": {
+     "ok": false,
+     "err": "CertificateException: extKeyUsage does not allow serverAuth"
+    },
+    "host-other-name": {
+     "ok": false,
+     "err": "CertificateException: No subject alternative DNS name matching other.example found."
+    },
+    "host-wildcard-two-labels": {
+     "ok": false,
+     "err": "CertificateException: No subject alternative DNS name matching a.b.wild.example found."
+    },
+    "host-wildcard-bare": {
+     "ok": false,
+     "err": "CertificateException: No subject alternative DNS name matching wild.example found."
+    },
+    "host-nul-in-name": {
+     "ok": false,
+     "err": "CertificateException: No subject alternative DNS name matching test.example found."
+    },
+    "host-wildcard-partial": {
+     "ok": true,
+     "err": null
+    },
+    "host-wildcard-tld": {
+     "ok": true,
+     "err": null
+    }
+   }
+  },
+  "mbedTLS": {
+   "version": "mbedTLS 4.2.0 (current time)",
+   "verdicts": {
+    "valid": {
+     "ok": true,
+     "err": null
+    },
+    "valid-www": {
+     "ok": true,
+     "err": null
+    },
+    "valid-wildcard": {
+     "ok": true,
+     "err": null
+    },
+    "der-long-length": {
+     "ok": true,
+     "err": null
+    },
+    "der-length-leading-zero": {
+     "ok": true,
+     "err": null
+    },
+    "der-indefinite-length": {
+     "ok": false,
+     "err": "parse leaf: -0x0064"
+    },
+    "der-integer-padding": {
+     "ok": true,
+     "err": null
+    },
+    "der-boolean-01": {
+     "ok": true,
+     "err": null
+    },
+    "der-default-false-written": {
+     "ok": true,
+     "err": null
+    },
+    "der-high-tag-for-low": {
+     "ok": false,
+     "err": "parse leaf: -0x0062"
+    },
+    "der-oid-padding": {
+     "ok": true,
+     "err": null
+    },
+    "rfc-generalizedtime-2026": {
+     "ok": true,
+     "err": null
+    },
+    "rfc-february-30": {
+     "ok": false,
+     "err": "parse leaf: -0x2400"
+    },
+    "der-trailing-in-extension": {
+     "ok": false,
+     "err": "parse leaf: -0x2500"
+    },
+    "der-trailing-byte": {
+     "ok": true,
+     "err": null
+    },
+    "der-outer-length-leading-zero": {
+     "ok": true,
+     "err": null
+    },
+    "der-outer-indefinite": {
+     "ok": false,
+     "err": "parse leaf: -0x2180"
+    },
+    "rfc-outer-algorithm-differs": {
+     "ok": false,
+     "err": "parse leaf: -0x2680"
+    },
+    "path-unknown-critical-extension": {
+     "ok": false,
+     "err": "parse leaf: -0x0062"
+    },
+    "path-duplicate-extension": {
+     "ok": false,
+     "err": "parse leaf: -0x2500"
+    },
+    "path-leaf-as-ca": {
+     "ok": false,
+     "err": "verify: -0x2700 flags 0x00000008"
+    },
+    "path-length-exceeded": {
+     "ok": false,
+     "err": "verify: -0x2700 flags 0x00000008"
+    },
+    "path-issuer-without-keycertsign": {
+     "ok": false,
+     "err": "verify: -0x2700 flags 0x00000008"
+    },
+    "path-expired-intermediate": {
+     "ok": false,
+     "err": "verify: -0x2700 flags 0x00000001"
+    },
+    "path-leaf-not-yet-valid": {
+     "ok": false,
+     "err": "verify: -0x2700 flags 0x00000200"
+    },
+    "path-client-only-eku": {
+     "ok": false,
+     "err": "extKeyUsage does not allow serverAuth"
+    },
+    "host-other-name": {
+     "ok": false,
+     "err": "verify: -0x2700 flags 0x00000004"
+    },
+    "host-wildcard-two-labels": {
+     "ok": false,
+     "err": "verify: -0x2700 flags 0x00000004"
+    },
+    "host-wildcard-bare": {
+     "ok": false,
+     "err": "verify: -0x2700 flags 0x00000004"
+    },
+    "host-nul-in-name": {
+     "ok": false,
+     "err": "verify: -0x2700 flags 0x00000004"
+    },
+    "host-wildcard-partial": {
+     "ok": false,
+     "err": "verify: -0x2700 flags 0x00000004"
+    },
+    "host-wildcard-tld": {
+     "ok": true,
+     "err": null
+    }
+   }
+  },
+  "wolfSSL": {
+   "version": "wolfSSL 5.9.4 (current time)",
+   "verdicts": {
+    "valid": {
+     "ok": true,
+     "err": null
+    },
+    "valid-www": {
+     "ok": true,
+     "err": null
+    },
+    "valid-wildcard": {
+     "ok": true,
+     "err": null
+    },
+    "der-long-length": {
+     "ok": false,
+     "err": "d2i refused the leaf"
+    },
+    "der-length-leading-zero": {
+     "ok": false,
+     "err": "d2i refused the leaf"
+    },
+    "der-indefinite-length": {
+     "ok": false,
+     "err": "d2i refused the leaf"
+    },
+    "der-integer-padding": {
+     "ok": false,
+     "err": "d2i refused the leaf"
+    },
+    "der-boolean-01": {
+     "ok": true,
+     "err": null
+    },
+    "der-default-false-written": {
+     "ok": true,
+     "err": null
+    },
+    "der-high-tag-for-low": {
+     "ok": false,
+     "err": "d2i refused the leaf"
+    },
+    "der-oid-padding": {
+     "ok": true,
+     "err": null
+    },
+    "rfc-generalizedtime-2026": {
+     "ok": true,
+     "err": null
+    },
+    "rfc-february-30": {
+     "ok": true,
+     "err": null
+    },
+    "der-trailing-in-extension": {
+     "ok": true,
+     "err": null
+    },
+    "der-trailing-byte": {
+     "ok": false,
+     "err": "d2i refused the leaf"
+    },
+    "der-outer-length-leading-zero": {
+     "ok": false,
+     "err": "d2i refused the leaf"
+    },
+    "der-outer-indefinite": {
+     "ok": false,
+     "err": "d2i refused the leaf"
+    },
+    "rfc-outer-algorithm-differs": {
+     "ok": true,
+     "err": null
+    },
+    "path-unknown-critical-extension": {
+     "ok": false,
+     "err": "d2i refused the leaf"
+    },
+    "path-duplicate-extension": {
+     "ok": false,
+     "err": "d2i refused the leaf"
+    },
+    "path-leaf-as-ca": {
+     "ok": false,
+     "err": "verify: error 79"
+    },
+    "path-length-exceeded": {
+     "ok": false,
+     "err": "verify: error 25"
+    },
+    "path-issuer-without-keycertsign": {
+     "ok": false,
+     "err": "verify: error 1"
+    },
+    "path-expired-intermediate": {
+     "ok": false,
+     "err": "verify: error 1"
+    },
+    "path-leaf-not-yet-valid": {
+     "ok": false,
+     "err": "verify: error 9"
+    },
+    "path-client-only-eku": {
+     "ok": false,
+     "err": "extKeyUsage does not allow serverAuth"
+    },
+    "host-other-name": {
+     "ok": false,
+     "err": "host name does not match"
+    },
+    "host-wildcard-two-labels": {
+     "ok": false,
+     "err": "host name does not match"
+    },
+    "host-wildcard-bare": {
+     "ok": false,
+     "err": "host name does not match"
+    },
+    "host-nul-in-name": {
+     "ok": false,
+     "err": "host name does not match"
+    },
+    "host-wildcard-partial": {
+     "ok": true,
+     "err": null
+    },
+    "host-wildcard-tld": {
+     "ok": false,
+     "err": "host name does not match"
     }
    }
   }

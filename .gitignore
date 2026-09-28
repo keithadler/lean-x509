@@ -3,3 +3,5 @@ test/crosscheck/crosscheck-go
 test/crosscheck/crosscheck-apple
 test/crosscheck/rust/target/
 __pycache__/
+test/crosscheck/crosscheck-mbedtls
+test/crosscheck/crosscheck-wolfssl

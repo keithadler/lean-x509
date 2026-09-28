@@ -264,7 +264,8 @@ def build(out):
     add("host-nul-in-name", "Host", leaf(san=["test.example\x00.evil.example"]),
         "a dNSName with a NUL byte names nothing (the 2009 null-prefix attack)")
     add("host-wildcard-partial", "Host", leaf(san=["t*.example"]),
-        "RFC 9525 §6.3: a wildcard is the whole leftmost label", host="test.example")
+        "RFC 9525 §6.3: a partial-label wildcard MUST be ignored (RFC 6125, replaced in 2023, allowed it)",
+        host="test.example")
     add("host-wildcard-tld", "Host", leaf(san=["*.example"]),
         "policy: *.example for x.example (RFC 9525 allows it; browsers refuse it by the Public Suffix List)",
         host="x.example", expect="policy")
