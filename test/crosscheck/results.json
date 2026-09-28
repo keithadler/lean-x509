@@ -1,0 +1,1722 @@
+{
+ "cases": [
+  {
+   "id": "valid",
+   "group": "control",
+   "leaf": "valid.der",
+   "chain": [
+    "inter.der"
+   ],
+   "anchor": "root.der",
+   "host": "test.example",
+   "expect": "accept",
+   "rule": "a well-formed chain"
+  },
+  {
+   "id": "valid-www",
+   "group": "control",
+   "leaf": "valid-www.der",
+   "chain": [
+    "inter.der"
+   ],
+   "anchor": "root.der",
+   "host": "www.test.example",
+   "expect": "accept",
+   "rule": "the certificate names www.test.example"
+  },
+  {
+   "id": "valid-wildcard",
+   "group": "control",
+   "leaf": "valid-wildcard.der",
+   "chain": [
+    "inter.der"
+   ],
+   "anchor": "root.der",
+   "host": "a.wild.example",
+   "expect": "accept",
+   "rule": "*.wild.example covers a.wild.example"
+  },
+  {
+   "id": "der-long-length",
+   "group": "DER",
+   "leaf": "der-long-length.der",
+   "chain": [
+    "inter.der"
+   ],
+   "anchor": "root.der",
+   "host": "test.example",
+   "expect": "reject",
+   "rule": "X.690 \u00a710.1: the shortest length form (0x81 01 where 01 fits)"
+  },
+  {
+   "id": "der-length-leading-zero",
+   "group": "DER",
+   "leaf": "der-length-leading-zero.der",
+   "chain": [
+    "inter.der"
+   ],
+   "anchor": "root.der",
+   "host": "test.example",
+   "expect": "reject",
+   "rule": "X.690 \u00a710.1: no leading zero in a long-form length"
+  },
+  {
+   "id": "der-indefinite-length",
+   "group": "DER",
+   "leaf": "der-indefinite-length.der",
+   "chain": [
+    "inter.der"
+   ],
+   "anchor": "root.der",
+   "host": "test.example",
+   "expect": "reject",
+   "rule": "X.690 \u00a710.1: DER never uses the indefinite length"
+  },
+  {
+   "id": "der-integer-padding",
+   "group": "DER",
+   "leaf": "der-integer-padding.der",
+   "chain": [
+    "inter.der"
+   ],
+   "anchor": "root.der",
+   "host": "test.example",
+   "expect": "reject",
+   "rule": "X.690 \u00a78.3.2: an INTEGER in the fewest octets"
+  },
+  {
+   "id": "der-boolean-01",
+   "group": "DER",
+   "leaf": "der-boolean-01.der",
+   "chain": [
+    "inter.der"
+   ],
+   "anchor": "root.der",
+   "host": "test.example",
+   "expect": "reject",
+   "rule": "X.690 \u00a711.1: DER TRUE is 0xFF"
+  },
+  {
+   "id": "der-default-false-written",
+   "group": "DER",
+   "leaf": "der-default-false-written.der",
+   "chain": [
+    "inter.der"
+   ],
+   "anchor": "root.der",
+   "host": "test.example",
+   "expect": "reject",
+   "rule": "X.690 \u00a711.5: a DEFAULT value (critical FALSE) is omitted"
+  },
+  {
+   "id": "der-high-tag-for-low",
+   "group": "DER",
+   "leaf": "der-high-tag-for-low.der",
+   "chain": [
+    "inter.der"
+   ],
+   "anchor": "root.der",
+   "host": "test.example",
+   "expect": "reject",
+   "rule": "X.690 \u00a78.1.2: tag numbers below 31 use one identifier octet"
+  },
+  {
+   "id": "der-oid-padding",
+   "group": "DER",
+   "leaf": "der-oid-padding.der",
+   "chain": [
+    "inter.der"
+   ],
+   "anchor": "root.der",
+   "host": "test.example",
+   "expect": "reject",
+   "rule": "X.690 \u00a78.19.2: no 0x80 padding in an OID subidentifier"
+  },
+  {
+   "id": "rfc-generalizedtime-2026",
+   "group": "DER",
+   "leaf": "rfc-generalizedtime-2026.der",
+   "chain": [
+    "inter.der"
+   ],
+   "anchor": "root.der",
+   "host": "test.example",
+   "expect": "reject",
+   "rule": "RFC 5280 \u00a74.1.2.5: dates through 2049 are UTCTime"
+  },
+  {
+   "id": "rfc-february-30",
+   "group": "DER",
+   "leaf": "rfc-february-30.der",
+   "chain": [
+    "inter.der"
+   ],
+   "anchor": "root.der",
+   "host": "test.example",
+   "expect": "reject",
+   "rule": "RFC 5280 \u00a74.1.2.5: a real calendar date"
+  },
+  {
+   "id": "der-trailing-in-extension",
+   "group": "DER",
+   "leaf": "der-trailing-in-extension.der",
+   "chain": [
+    "inter.der"
+   ],
+   "anchor": "root.der",
+   "host": "test.example",
+   "expect": "reject",
+   "rule": "X.690: an extension's value is exactly one DER value"
+  },
+  {
+   "id": "der-trailing-byte",
+   "group": "DER",
+   "leaf": "der-trailing-byte.der",
+   "chain": [
+    "inter.der"
+   ],
+   "anchor": "root.der",
+   "host": "test.example",
+   "expect": "reject",
+   "rule": "the certificate is exactly one DER value, nothing after it"
+  },
+  {
+   "id": "der-outer-length-leading-zero",
+   "group": "DER",
+   "leaf": "der-outer-length-leading-zero.der",
+   "chain": [
+    "inter.der"
+   ],
+   "anchor": "root.der",
+   "host": "test.example",
+   "expect": "reject",
+   "rule": "X.690 \u00a710.1, on the unsigned outer SEQUENCE: same certificate, different bytes"
+  },
+  {
+   "id": "der-outer-indefinite",
+   "group": "DER",
+   "leaf": "der-outer-indefinite.der",
+   "chain": [
+    "inter.der"
+   ],
+   "anchor": "root.der",
+   "host": "test.example",
+   "expect": "reject",
+   "rule": "X.690 \u00a710.1, on the unsigned outer SEQUENCE: same certificate, different bytes"
+  },
+  {
+   "id": "rfc-outer-algorithm-differs",
+   "group": "DER",
+   "leaf": "rfc-outer-algorithm-differs.der",
+   "chain": [
+    "inter.der"
+   ],
+   "anchor": "root.der",
+   "host": "test.example",
+   "expect": "reject",
+   "rule": "RFC 5280 \u00a74.1.1.2: signatureAlgorithm must equal the TBS signature field"
+  },
+  {
+   "id": "path-unknown-critical-extension",
+   "group": "RFC 5280",
+   "leaf": "path-unknown-critical-extension.der",
+   "chain": [
+    "inter.der"
+   ],
+   "anchor": "root.der",
+   "host": "test.example",
+   "expect": "reject",
+   "rule": "\u00a74.2: refuse a certificate with a critical extension it does not recognize"
+  },
+  {
+   "id": "path-duplicate-extension",
+   "group": "RFC 5280",
+   "leaf": "path-duplicate-extension.der",
+   "chain": [
+    "inter.der"
+   ],
+   "anchor": "root.der",
+   "host": "test.example",
+   "expect": "reject",
+   "rule": "\u00a74.2: a certificate must not include an extension twice"
+  },
+  {
+   "id": "path-leaf-as-ca",
+   "group": "RFC 5280",
+   "leaf": "path-leaf-as-ca.der",
+   "chain": [
+    "valid.der",
+    "inter.der"
+   ],
+   "anchor": "root.der",
+   "host": "evil.example",
+   "expect": "reject",
+   "rule": "\u00a76.1.4 (k): only a CA (cA = TRUE) may issue"
+  },
+  {
+   "id": "path-length-exceeded",
+   "group": "RFC 5280",
+   "leaf": "path-length-exceeded.der",
+   "chain": [
+    "sub.der",
+    "capl.der"
+   ],
+   "anchor": "root.der",
+   "host": "test.example",
+   "expect": "reject",
+   "rule": "\u00a76.1.4 (m): pathLenConstraint 0 allows no sub-CA"
+  },
+  {
+   "id": "path-issuer-without-keycertsign",
+   "group": "RFC 5280",
+   "leaf": "path-issuer-without-keycertsign.der",
+   "chain": [
+    "nosign.der"
+   ],
+   "anchor": "root.der",
+   "host": "test.example",
+   "expect": "reject",
+   "rule": "\u00a76.1.4 (n): an issuer's keyUsage must include keyCertSign"
+  },
+  {
+   "id": "path-expired-intermediate",
+   "group": "RFC 5280",
+   "leaf": "path-expired-intermediate.der",
+   "chain": [
+    "old.der"
+   ],
+   "anchor": "root.der",
+   "host": "test.example",
+   "expect": "reject",
+   "rule": "\u00a76.1.3 (a)(2): every certificate current"
+  },
+  {
+   "id": "path-leaf-not-yet-valid",
+   "group": "RFC 5280",
+   "leaf": "path-leaf-not-yet-valid.der",
+   "chain": [
+    "inter.der"
+   ],
+   "anchor": "root.der",
+   "host": "test.example",
+   "expect": "reject",
+   "rule": "\u00a76.1.3 (a)(2): not before notBefore"
+  },
+  {
+   "id": "path-client-only-eku",
+   "group": "RFC 5280",
+   "leaf": "path-client-only-eku.der",
+   "chain": [
+    "inter.der"
+   ],
+   "anchor": "root.der",
+   "host": "test.example",
+   "expect": "reject",
+   "rule": "RFC 5280 \u00a74.2.1.12 with RFC 9525: a server certificate's EKU must allow serverAuth"
+  },
+  {
+   "id": "host-other-name",
+   "group": "Host",
+   "leaf": "host-other-name.der",
+   "chain": [
+    "inter.der"
+   ],
+   "anchor": "root.der",
+   "host": "other.example",
+   "expect": "reject",
+   "rule": "the certificate does not name other.example"
+  },
+  {
+   "id": "host-wildcard-two-labels",
+   "group": "Host",
+   "leaf": "host-wildcard-two-labels.der",
+   "chain": [
+    "inter.der"
+   ],
+   "anchor": "root.der",
+   "host": "a.b.wild.example",
+   "expect": "reject",
+   "rule": "a wildcard covers one label, not a.b.wild.example"
+  },
+  {
+   "id": "host-wildcard-bare",
+   "group": "Host",
+   "leaf": "host-wildcard-bare.der",
+   "chain": [
+    "inter.der"
+   ],
+   "anchor": "root.der",
+   "host": "wild.example",
+   "expect": "reject",
+   "rule": "*.wild.example does not cover wild.example itself"
+  },
+  {
+   "id": "host-nul-in-name",
+   "group": "Host",
+   "leaf": "host-nul-in-name.der",
+   "chain": [
+    "inter.der"
+   ],
+   "anchor": "root.der",
+   "host": "test.example",
+   "expect": "reject",
+   "rule": "a dNSName with a NUL byte names nothing (the 2009 null-prefix attack)"
+  },
+  {
+   "id": "host-wildcard-partial",
+   "group": "Host",
+   "leaf": "host-wildcard-partial.der",
+   "chain": [
+    "inter.der"
+   ],
+   "anchor": "root.der",
+   "host": "test.example",
+   "expect": "reject",
+   "rule": "RFC 9525 \u00a76.3: a wildcard is the whole leftmost label"
+  },
+  {
+   "id": "host-wildcard-tld",
+   "group": "Host",
+   "leaf": "host-wildcard-tld.der",
+   "chain": [
+    "inter.der"
+   ],
+   "anchor": "root.der",
+   "host": "x.example",
+   "expect": "policy",
+   "rule": "policy: *.example for x.example (RFC 9525 allows it; browsers refuse it by the Public Suffix List)"
+  }
+ ],
+ "results": {
+  "Lean (this project)": {
+   "version": "lean-x509",
+   "verdicts": {
+    "valid": {
+     "ok": true,
+     "err": null
+    },
+    "valid-www": {
+     "ok": true,
+     "err": null
+    },
+    "valid-wildcard": {
+     "ok": true,
+     "err": null
+    },
+    "der-long-length": {
+     "ok": false,
+     "err": "validate returned false"
+    },
+    "der-length-leading-zero": {
+     "ok": false,
+     "err": "validate returned false"
+    },
+    "der-indefinite-length": {
+     "ok": false,
+     "err": "validate returned false"
+    },
+    "der-integer-padding": {
+     "ok": false,
+     "err": "validate returned false"
+    },
+    "der-boolean-01": {
+     "ok": false,
+     "err": "validate returned false"
+    },
+    "der-default-false-written": {
+     "ok": false,
+     "err": "validate returned false"
+    },
+    "der-high-tag-for-low": {
+     "ok": false,
+     "err": "validate returned false"
+    },
+    "der-oid-padding": {
+     "ok": false,
+     "err": "validate returned false"
+    },
+    "rfc-generalizedtime-2026": {
+     "ok": false,
+     "err": "validate returned false"
+    },
+    "rfc-february-30": {
+     "ok": false,
+     "err": "validate returned false"
+    },
+    "der-trailing-in-extension": {
+     "ok": false,
+     "err": "validate returned false"
+    },
+    "der-trailing-byte": {
+     "ok": false,
+     "err": "validate returned false"
+    },
+    "der-outer-length-leading-zero": {
+     "ok": false,
+     "err": "validate returned false"
+    },
+    "der-outer-indefinite": {
+     "ok": false,
+     "err": "validate returned false"
+    },
+    "rfc-outer-algorithm-differs": {
+     "ok": false,
+     "err": "validate returned false"
+    },
+    "path-unknown-critical-extension": {
+     "ok": false,
+     "err": "validate returned false"
+    },
+    "path-duplicate-extension": {
+     "ok": false,
+     "err": "validate returned false"
+    },
+    "path-leaf-as-ca": {
+     "ok": false,
+     "err": "validate returned false"
+    },
+    "path-length-exceeded": {
+     "ok": false,
+     "err": "validate returned false"
+    },
+    "path-issuer-without-keycertsign": {
+     "ok": false,
+     "err": "validate returned false"
+    },
+    "path-expired-intermediate": {
+     "ok": false,
+     "err": "validate returned false"
+    },
+    "path-leaf-not-yet-valid": {
+     "ok": false,
+     "err": "validate returned false"
+    },
+    "path-client-only-eku": {
+     "ok": false,
+     "err": "validate returned false"
+    },
+    "host-other-name": {
+     "ok": false,
+     "err": "validate returned false"
+    },
+    "host-wildcard-two-labels": {
+     "ok": false,
+     "err": "validate returned false"
+    },
+    "host-wildcard-bare": {
+     "ok": false,
+     "err": "validate returned false"
+    },
+    "host-nul-in-name": {
+     "ok": false,
+     "err": "validate returned false"
+    },
+    "host-wildcard-partial": {
+     "ok": false,
+     "err": "validate returned false"
+    },
+    "host-wildcard-tld": {
+     "ok": false,
+     "err": "validate returned false"
+    }
+   }
+  },
+  "OpenSSL": {
+   "version": "OpenSSL 3.6.3 9 Jun 2026 (Library: OpenSSL 3.6.3 9 Jun 2026)",
+   "verdicts": {
+    "valid": {
+     "ok": true,
+     "err": null
+    },
+    "valid-www": {
+     "ok": true,
+     "err": null
+    },
+    "valid-wildcard": {
+     "ok": true,
+     "err": null
+    },
+    "der-long-length": {
+     "ok": true,
+     "err": null
+    },
+    "der-length-leading-zero": {
+     "ok": true,
+     "err": null
+    },
+    "der-indefinite-length": {
+     "ok": true,
+     "err": null
+    },
+    "der-integer-padding": {
+     "ok": false,
+     "err": "8021F1F801000000:error:1608010C:STORE routines:ossl_store_handle_load_result:unsupported:crypto/store/store_result.c:160:provider=default"
+    },
+    "der-boolean-01": {
+     "ok": true,
+     "err": null
+    },
+    "der-default-false-written": {
+     "ok": true,
+     "err": null
+    },
+    "der-high-tag-for-low": {
+     "ok": true,
+     "err": null
+    },
+    "der-oid-padding": {
+     "ok": false,
+     "err": "8021F1F801000000:error:1608010C:STORE routines:ossl_store_handle_load_result:unsupported:crypto/store/store_result.c:160:provider=default"
+    },
+    "rfc-generalizedtime-2026": {
+     "ok": true,
+     "err": null
+    },
+    "rfc-february-30": {
+     "ok": false,
+     "err": "error openssl-rfc-february-30-leaf.pem: verification failed"
+    },
+    "der-trailing-in-extension": {
+     "ok": true,
+     "err": null
+    },
+    "der-trailing-byte": {
+     "ok": true,
+     "err": null
+    },
+    "der-outer-length-leading-zero": {
+     "ok": true,
+     "err": null
+    },
+    "der-outer-indefinite": {
+     "ok": true,
+     "err": null
+    },
+    "rfc-outer-algorithm-differs": {
+     "ok": false,
+     "err": "error openssl-rfc-outer-algorithm-differs-leaf.pem: verification failed"
+    },
+    "path-unknown-critical-extension": {
+     "ok": false,
+     "err": "error openssl-path-unknown-critical-extension-leaf.pem: verification failed"
+    },
+    "path-duplicate-extension": {
+     "ok": false,
+     "err": "8021F1F801000000:error:1100009E:X509 V3 routines:ossl_x509v3_cache_extensions:invalid certificate:crypto/x509/v3_purp.c:677:"
+    },
+    "path-leaf-as-ca": {
+     "ok": false,
+     "err": "error openssl-path-leaf-as-ca-leaf.pem: verification failed"
+    },
+    "path-length-exceeded": {
+     "ok": false,
+     "err": "error openssl-path-length-exceeded-leaf.pem: verification failed"
+    },
+    "path-issuer-without-keycertsign": {
+     "ok": false,
+     "err": "error openssl-path-issuer-without-keycertsign-leaf.pem: verification failed"
+    },
+    "path-expired-intermediate": {
+     "ok": false,
+     "err": "error openssl-path-expired-intermediate-leaf.pem: verification failed"
+    },
+    "path-leaf-not-yet-valid": {
+     "ok": false,
+     "err": "error openssl-path-leaf-not-yet-valid-leaf.pem: verification failed"
+    },
+    "path-client-only-eku": {
+     "ok": false,
+     "err": "error openssl-path-client-only-eku-leaf.pem: verification failed"
+    },
+    "host-other-name": {
+     "ok": false,
+     "err": "error openssl-host-other-name-leaf.pem: verification failed"
+    },
+    "host-wildcard-two-labels": {
+     "ok": false,
+     "err": "error openssl-host-wildcard-two-labels-leaf.pem: verification failed"
+    },
+    "host-wildcard-bare": {
+     "ok": false,
+     "err": "error openssl-host-wildcard-bare-leaf.pem: verification failed"
+    },
+    "host-nul-in-name": {
+     "ok": false,
+     "err": "error openssl-host-nul-in-name-leaf.pem: verification failed"
+    },
+    "host-wildcard-partial": {
+     "ok": false,
+     "err": "error openssl-host-wildcard-partial-leaf.pem: verification failed"
+    },
+    "host-wildcard-tld": {
+     "ok": false,
+     "err": "error openssl-host-wildcard-tld-leaf.pem: verification failed"
+    }
+   }
+  },
+  "OpenSSL -x509_strict": {
+   "version": "the same, with -x509_strict",
+   "verdicts": {
+    "valid": {
+     "ok": true,
+     "err": null
+    },
+    "valid-www": {
+     "ok": true,
+     "err": null
+    },
+    "valid-wildcard": {
+     "ok": true,
+     "err": null
+    },
+    "der-long-length": {
+     "ok": true,
+     "err": null
+    },
+    "der-length-leading-zero": {
+     "ok": true,
+     "err": null
+    },
+    "der-indefinite-length": {
+     "ok": true,
+     "err": null
+    },
+    "der-integer-padding": {
+     "ok": false,
+     "err": "8021F1F801000000:error:1608010C:STORE routines:ossl_store_handle_load_result:unsupported:crypto/store/store_result.c:160:provider=default"
+    },
+    "der-boolean-01": {
+     "ok": true,
+     "err": null
+    },
+    "der-default-false-written": {
+     "ok": true,
+     "err": null
+    },
+    "der-high-tag-for-low": {
+     "ok": true,
+     "err": null
+    },
+    "der-oid-padding": {
+     "ok": false,
+     "err": "8021F1F801000000:error:1608010C:STORE routines:ossl_store_handle_load_result:unsupported:crypto/store/store_result.c:160:provider=default"
+    },
+    "rfc-generalizedtime-2026": {
+     "ok": true,
+     "err": null
+    },
+    "rfc-february-30": {
+     "ok": false,
+     "err": "error strict-rfc-february-30-leaf.pem: verification failed"
+    },
+    "der-trailing-in-extension": {
+     "ok": true,
+     "err": null
+    },
+    "der-trailing-byte": {
+     "ok": true,
+     "err": null
+    },
+    "der-outer-length-leading-zero": {
+     "ok": true,
+     "err": null
+    },
+    "der-outer-indefinite": {
+     "ok": true,
+     "err": null
+    },
+    "rfc-outer-algorithm-differs": {
+     "ok": false,
+     "err": "error strict-rfc-outer-algorithm-differs-leaf.pem: verification failed"
+    },
+    "path-unknown-critical-extension": {
+     "ok": false,
+     "err": "error strict-path-unknown-critical-extension-leaf.pem: verification failed"
+    },
+    "path-duplicate-extension": {
+     "ok": false,
+     "err": "8021F1F801000000:error:1100009E:X509 V3 routines:ossl_x509v3_cache_extensions:invalid certificate:crypto/x509/v3_purp.c:677:"
+    },
+    "path-leaf-as-ca": {
+     "ok": false,
+     "err": "error strict-path-leaf-as-ca-leaf.pem: verification failed"
+    },
+    "path-length-exceeded": {
+     "ok": false,
+     "err": "error strict-path-length-exceeded-leaf.pem: verification failed"
+    },
+    "path-issuer-without-keycertsign": {
+     "ok": false,
+     "err": "error strict-path-issuer-without-keycertsign-leaf.pem: verification failed"
+    },
+    "path-expired-intermediate": {
+     "ok": false,
+     "err": "error strict-path-expired-intermediate-leaf.pem: verification failed"
+    },
+    "path-leaf-not-yet-valid": {
+     "ok": false,
+     "err": "error strict-path-leaf-not-yet-valid-leaf.pem: verification failed"
+    },
+    "path-client-only-eku": {
+     "ok": false,
+     "err": "error strict-path-client-only-eku-leaf.pem: verification failed"
+    },
+    "host-other-name": {
+     "ok": false,
+     "err": "error strict-host-other-name-leaf.pem: verification failed"
+    },
+    "host-wildcard-two-labels": {
+     "ok": false,
+     "err": "error strict-host-wildcard-two-labels-leaf.pem: verification failed"
+    },
+    "host-wildcard-bare": {
+     "ok": false,
+     "err": "error strict-host-wildcard-bare-leaf.pem: verification failed"
+    },
+    "host-nul-in-name": {
+     "ok": false,
+     "err": "error strict-host-nul-in-name-leaf.pem: verification failed"
+    },
+    "host-wildcard-partial": {
+     "ok": false,
+     "err": "error strict-host-wildcard-partial-leaf.pem: verification failed"
+    },
+    "host-wildcard-tld": {
+     "ok": false,
+     "err": "error strict-host-wildcard-tld-leaf.pem: verification failed"
+    }
+   }
+  },
+  "LibreSSL": {
+   "version": "LibreSSL 3.3.6 (macOS system openssl; no host-name check)",
+   "verdicts": {
+    "valid": {
+     "ok": true,
+     "err": null
+    },
+    "valid-www": {
+     "ok": true,
+     "err": null
+    },
+    "valid-wildcard": {
+     "ok": true,
+     "err": null
+    },
+    "der-long-length": {
+     "ok": true,
+     "err": null
+    },
+    "der-length-leading-zero": {
+     "ok": true,
+     "err": null
+    },
+    "der-indefinite-length": {
+     "ok": true,
+     "err": null
+    },
+    "der-integer-padding": {
+     "ok": true,
+     "err": null
+    },
+    "der-boolean-01": {
+     "ok": true,
+     "err": null
+    },
+    "der-default-false-written": {
+     "ok": true,
+     "err": null
+    },
+    "der-high-tag-for-low": {
+     "ok": true,
+     "err": null
+    },
+    "der-oid-padding": {
+     "ok": false,
+     "err": "8471519616:error:09FFF00D:PEM routines:CRYPTO_internal:ASN1 lib:/AppleInternal/Library/BuildRoots/4~CVR0ugD7d_x9KkNiDhb6ZUdowAfhsgliSKtR7QU/Library/Caches/com.apple.xbs/TemporaryDirectory.kapob0/Sourc"
+    },
+    "rfc-generalizedtime-2026": {
+     "ok": false,
+     "err": "libressl-rfc-generalizedtime-2026-leaf.pem: verification failed: 13 (format error in certifica"
+    },
+    "rfc-february-30": {
+     "ok": true,
+     "err": null
+    },
+    "der-trailing-in-extension": {
+     "ok": true,
+     "err": null
+    },
+    "der-trailing-byte": {
+     "ok": false,
+     "err": "8471519616:error:09FFF00D:PEM routines:CRYPTO_internal:ASN1 lib:/AppleInternal/Library/BuildRoots/4~CVR0ugD7d_x9KkNiDhb6ZUdowAfhsgliSKtR7QU/Library/Caches/com.apple.xbs/TemporaryDirectory.kapob0/Sourc"
+    },
+    "der-outer-length-leading-zero": {
+     "ok": true,
+     "err": null
+    },
+    "der-outer-indefinite": {
+     "ok": true,
+     "err": null
+    },
+    "rfc-outer-algorithm-differs": {
+     "ok": false,
+     "err": "libressl-rfc-outer-algorithm-differs-leaf.pem: verification failed: 7 (certificate signature f"
+    },
+    "path-unknown-critical-extension": {
+     "ok": false,
+     "err": "libressl-path-unknown-critical-extension-leaf.pem: verification failed: 34 (unhandled critical"
+    },
+    "path-duplicate-extension": {
+     "ok": false,
+     "err": "libressl-path-duplicate-extension-leaf.pem: verification failed: 20 (unable to get local issue"
+    },
+    "path-leaf-as-ca": {
+     "ok": false,
+     "err": "libressl-path-leaf-as-ca-leaf.pem: verification failed: 20 (unable to get local issuer certifi"
+    },
+    "path-length-exceeded": {
+     "ok": false,
+     "err": "libressl-path-length-exceeded-leaf.pem: verification failed: 25 (path length constraint exceed"
+    },
+    "path-issuer-without-keycertsign": {
+     "ok": false,
+     "err": "libressl-path-issuer-without-keycertsign-leaf.pem: verification failed: 20 (unable to get loca"
+    },
+    "path-expired-intermediate": {
+     "ok": false,
+     "err": "libressl-path-expired-intermediate-leaf.pem: verification failed: 20 (unable to get local issu"
+    },
+    "path-leaf-not-yet-valid": {
+     "ok": false,
+     "err": "libressl-path-leaf-not-yet-valid-leaf.pem: verification failed: 9 (certificate is not yet vali"
+    },
+    "path-client-only-eku": {
+     "ok": false,
+     "err": "libressl-path-client-only-eku-leaf.pem: verification failed: 26 (unsupported certificate purpo"
+    },
+    "host-other-name": {
+     "ok": null,
+     "err": "this verify command has no host-name option"
+    },
+    "host-wildcard-two-labels": {
+     "ok": null,
+     "err": "this verify command has no host-name option"
+    },
+    "host-wildcard-bare": {
+     "ok": null,
+     "err": "this verify command has no host-name option"
+    },
+    "host-nul-in-name": {
+     "ok": null,
+     "err": "this verify command has no host-name option"
+    },
+    "host-wildcard-partial": {
+     "ok": null,
+     "err": "this verify command has no host-name option"
+    },
+    "host-wildcard-tld": {
+     "ok": null,
+     "err": "this verify command has no host-name option"
+    }
+   }
+  },
+  "GnuTLS": {
+   "version": "certtool 3.8.13",
+   "verdicts": {
+    "valid": {
+     "ok": true,
+     "err": null
+    },
+    "valid-www": {
+     "ok": true,
+     "err": null
+    },
+    "valid-wildcard": {
+     "ok": true,
+     "err": null
+    },
+    "der-long-length": {
+     "ok": true,
+     "err": null
+    },
+    "der-length-leading-zero": {
+     "ok": true,
+     "err": null
+    },
+    "der-indefinite-length": {
+     "ok": false,
+     "err": "error parsing CRTs: ASN1 parser: Error in DER parsing."
+    },
+    "der-integer-padding": {
+     "ok": true,
+     "err": null
+    },
+    "der-boolean-01": {
+     "ok": true,
+     "err": null
+    },
+    "der-default-false-written": {
+     "ok": true,
+     "err": null
+    },
+    "der-high-tag-for-low": {
+     "ok": true,
+     "err": null
+    },
+    "der-oid-padding": {
+     "ok": false,
+     "err": "error parsing CRTs: ASN1 parser: Error in DER parsing."
+    },
+    "rfc-generalizedtime-2026": {
+     "ok": true,
+     "err": null
+    },
+    "rfc-february-30": {
+     "ok": true,
+     "err": null
+    },
+    "der-trailing-in-extension": {
+     "ok": true,
+     "err": null
+    },
+    "der-trailing-byte": {
+     "ok": false,
+     "err": "error parsing CRTs: ASN1 parser: Error in DER parsing."
+    },
+    "der-outer-length-leading-zero": {
+     "ok": true,
+     "err": null
+    },
+    "der-outer-indefinite": {
+     "ok": false,
+     "err": "error parsing CRTs: ASN1 parser: Error in DER parsing."
+    },
+    "rfc-outer-algorithm-differs": {
+     "ok": true,
+     "err": null
+    },
+    "path-unknown-critical-extension": {
+     "ok": false,
+     "err": "Chain verification output: Not verified. The certificate is NOT trusted. The certificate contains an unknown critical extension."
+    },
+    "path-duplicate-extension": {
+     "ok": false,
+     "err": "error parsing CRTs: Duplicate extension in X.509 certificate."
+    },
+    "path-leaf-as-ca": {
+     "ok": false,
+     "err": "Chain verification output: Not verified. The certificate is NOT trusted. The certificate issuer is not a CA. The certificate chain violates the signer's constraints."
+    },
+    "path-length-exceeded": {
+     "ok": false,
+     "err": "Chain verification output: Not verified. The certificate is NOT trusted. The certificate chain violates the signer's constraints."
+    },
+    "path-issuer-without-keycertsign": {
+     "ok": false,
+     "err": "Chain verification output: Not verified. The certificate is NOT trusted. The certificate chain violates the signer's constraints."
+    },
+    "path-expired-intermediate": {
+     "ok": false,
+     "err": "Chain verification output: Not verified. The certificate is NOT trusted. The certificate chain uses expired certificate."
+    },
+    "path-leaf-not-yet-valid": {
+     "ok": false,
+     "err": "Chain verification output: Not verified. The certificate is NOT trusted. The certificate chain uses not yet valid certificate."
+    },
+    "path-client-only-eku": {
+     "ok": false,
+     "err": "Chain verification output: Not verified. The certificate is NOT trusted. The certificate chain does not match the intended purpose."
+    },
+    "host-other-name": {
+     "ok": false,
+     "err": "Chain verification output: Not verified. The certificate is NOT trusted. The name in the certificate does not match the expected."
+    },
+    "host-wildcard-two-labels": {
+     "ok": false,
+     "err": "Chain verification output: Not verified. The certificate is NOT trusted. The name in the certificate does not match the expected."
+    },
+    "host-wildcard-bare": {
+     "ok": false,
+     "err": "Chain verification output: Not verified. The certificate is NOT trusted. The name in the certificate does not match the expected."
+    },
+    "host-nul-in-name": {
+     "ok": false,
+     "err": "Chain verification output: Not verified. The certificate is NOT trusted. The name in the certificate does not match the expected."
+    },
+    "host-wildcard-partial": {
+     "ok": false,
+     "err": "Chain verification output: Not verified. The certificate is NOT trusted. The name in the certificate does not match the expected."
+    },
+    "host-wildcard-tld": {
+     "ok": false,
+     "err": "Chain verification output: Not verified. The certificate is NOT trusted. The name in the certificate does not match the expected."
+    }
+   }
+  },
+  "NSS": {
+   "version": "NSS 3.125 (vfychain)",
+   "verdicts": {
+    "valid": {
+     "ok": true,
+     "err": null
+    },
+    "valid-www": {
+     "ok": true,
+     "err": null
+    },
+    "valid-wildcard": {
+     "ok": true,
+     "err": null
+    },
+    "der-long-length": {
+     "ok": false,
+     "err": "couldn't import der-long-length.der, -8187 = security library: invalid arguments."
+    },
+    "der-length-leading-zero": {
+     "ok": false,
+     "err": "couldn't import der-length-leading-zero.der, -8187 = security library: invalid arguments."
+    },
+    "der-indefinite-length": {
+     "ok": false,
+     "err": "couldn't import der-indefinite-length.der, -8191 = security library failure."
+    },
+    "der-integer-padding": {
+     "ok": true,
+     "err": null
+    },
+    "der-boolean-01": {
+     "ok": true,
+     "err": null
+    },
+    "der-default-false-written": {
+     "ok": true,
+     "err": null
+    },
+    "der-high-tag-for-low": {
+     "ok": false,
+     "err": "couldn't import der-high-tag-for-low.der, -8187 = security library: invalid arguments."
+    },
+    "der-oid-padding": {
+     "ok": true,
+     "err": null
+    },
+    "rfc-generalizedtime-2026": {
+     "ok": true,
+     "err": null
+    },
+    "rfc-february-30": {
+     "ok": true,
+     "err": null
+    },
+    "der-trailing-in-extension": {
+     "ok": true,
+     "err": null
+    },
+    "der-trailing-byte": {
+     "ok": false,
+     "err": "couldn't import der-trailing-byte.der, -8187 = security library: invalid arguments."
+    },
+    "der-outer-length-leading-zero": {
+     "ok": false,
+     "err": "couldn't import der-outer-length-leading-zero.der, -8187 = security library: invalid arguments"
+    },
+    "der-outer-indefinite": {
+     "ok": false,
+     "err": "couldn't import der-outer-indefinite.der, -8187 = security library: invalid arguments."
+    },
+    "rfc-outer-algorithm-differs": {
+     "ok": true,
+     "err": null
+    },
+    "path-unknown-critical-extension": {
+     "ok": false,
+     "err": "  ERROR -8151: Certificate contains unknown critical extension."
+    },
+    "path-duplicate-extension": {
+     "ok": true,
+     "err": null
+    },
+    "path-leaf-as-ca": {
+     "ok": false,
+     "err": "  ERROR -8156: Issuer certificate is invalid."
+    },
+    "path-length-exceeded": {
+     "ok": false,
+     "err": "  ERROR -8155: Certificate path length constraint is invalid."
+    },
+    "path-issuer-without-keycertsign": {
+     "ok": false,
+     "err": "    [unknown usage]."
+    },
+    "path-expired-intermediate": {
+     "ok": false,
+     "err": "    CN=lean-x509 Test CA expired,O=lean-x509 test PKI,C=US"
+    },
+    "path-leaf-not-yet-valid": {
+     "ok": false,
+     "err": "  ERROR -8181: Peer's Certificate has expired."
+    },
+    "path-client-only-eku": {
+     "ok": false,
+     "err": "    [unknown usage]."
+    },
+    "host-other-name": {
+     "ok": null,
+     "err": "vfychain does not check host names"
+    },
+    "host-wildcard-two-labels": {
+     "ok": null,
+     "err": "vfychain does not check host names"
+    },
+    "host-wildcard-bare": {
+     "ok": null,
+     "err": "vfychain does not check host names"
+    },
+    "host-nul-in-name": {
+     "ok": null,
+     "err": "vfychain does not check host names"
+    },
+    "host-wildcard-partial": {
+     "ok": null,
+     "err": "vfychain does not check host names"
+    },
+    "host-wildcard-tld": {
+     "ok": null,
+     "err": "vfychain does not check host names"
+    }
+   }
+  },
+  "Go": {
+   "version": "go version go1.26.6 darwin/arm64",
+   "verdicts": {
+    "valid": {
+     "ok": true,
+     "err": null
+    },
+    "valid-www": {
+     "ok": true,
+     "err": null
+    },
+    "valid-wildcard": {
+     "ok": true,
+     "err": null
+    },
+    "der-long-length": {
+     "ok": false,
+     "err": "parse leaf: x509: malformed version"
+    },
+    "der-length-leading-zero": {
+     "ok": false,
+     "err": "parse leaf: x509: malformed issuer"
+    },
+    "der-indefinite-length": {
+     "ok": false,
+     "err": "parse leaf: x509: malformed validity"
+    },
+    "der-integer-padding": {
+     "ok": false,
+     "err": "parse leaf: x509: malformed serial number"
+    },
+    "der-boolean-01": {
+     "ok": false,
+     "err": "parse leaf: x509: malformed extension critical field"
+    },
+    "der-default-false-written": {
+     "ok": true,
+     "err": null
+    },
+    "der-high-tag-for-low": {
+     "ok": false,
+     "err": "parse leaf: x509: malformed serial number"
+    },
+    "der-oid-padding": {
+     "ok": false,
+     "err": "parse leaf: x509: invalid RDNSequence: invalid attribute type"
+    },
+    "rfc-generalizedtime-2026": {
+     "ok": true,
+     "err": null
+    },
+    "rfc-february-30": {
+     "ok": false,
+     "err": "parse leaf: x509: malformed UTCTime"
+    },
+    "der-trailing-in-extension": {
+     "ok": true,
+     "err": null
+    },
+    "der-trailing-byte": {
+     "ok": false,
+     "err": "parse leaf: x509: trailing data"
+    },
+    "der-outer-length-leading-zero": {
+     "ok": false,
+     "err": "parse leaf: x509: malformed certificate"
+    },
+    "der-outer-indefinite": {
+     "ok": false,
+     "err": "parse leaf: x509: malformed certificate"
+    },
+    "rfc-outer-algorithm-differs": {
+     "ok": false,
+     "err": "parse leaf: x509: inner and outer signature algorithm identifiers don't match"
+    },
+    "path-unknown-critical-extension": {
+     "ok": false,
+     "err": "x509: unhandled critical extension"
+    },
+    "path-duplicate-extension": {
+     "ok": false,
+     "err": "parse leaf: x509: certificate contains duplicate extension with OID \"2.5.29.17\""
+    },
+    "path-leaf-as-ca": {
+     "ok": false,
+     "err": "x509: certificate signed by unknown authority (possibly because of \"x509: invalid signature: parent certificate cannot sign this kind of certificate\" while trying to verify candidate authority certificate \"test.example\")"
+    },
+    "path-length-exceeded": {
+     "ok": false,
+     "err": "x509: too many intermediates for path length constraint"
+    },
+    "path-issuer-without-keycertsign": {
+     "ok": false,
+     "err": "x509: certificate signed by unknown authority (possibly because of \"x509: invalid signature: parent certificate cannot sign this kind of certificate\" while trying to verify candidate authority certificate \"lean-x509 Test CA no certSign\")"
+    },
+    "path-expired-intermediate": {
+     "ok": false,
+     "err": "x509: certificate has expired or is not yet valid: current time 2026-09-27T12:00:00Z is after 2026-01-01T00:00:00Z"
+    },
+    "path-leaf-not-yet-valid": {
+     "ok": false,
+     "err": "x509: certificate has expired or is not yet valid: current time 2026-09-27T12:00:00Z is before 2027-01-01T00:00:00Z"
+    },
+    "path-client-only-eku": {
+     "ok": false,
+     "err": "x509: certificate specifies an incompatible key usage"
+    },
+    "host-other-name": {
+     "ok": false,
+     "err": "x509: certificate is valid for test.example, www.test.example, *.wild.example, not other.example"
+    },
+    "host-wildcard-two-labels": {
+     "ok": false,
+     "err": "x509: certificate is valid for test.example, www.test.example, *.wild.example, not a.b.wild.example"
+    },
+    "host-wildcard-bare": {
+     "ok": false,
+     "err": "x509: certificate is valid for test.example, www.test.example, *.wild.example, not wild.example"
+    },
+    "host-nul-in-name": {
+     "ok": false,
+     "err": "x509: certificate is valid for test.example\u0000.evil.example, not test.example"
+    },
+    "host-wildcard-partial": {
+     "ok": false,
+     "err": "x509: certificate is valid for t*.example, not test.example"
+    },
+    "host-wildcard-tld": {
+     "ok": true,
+     "err": null
+    }
+   }
+  },
+  "rustls-webpki": {
+   "version": "rustls-webpki 0.103",
+   "verdicts": {
+    "valid": {
+     "ok": true,
+     "err": null
+    },
+    "valid-www": {
+     "ok": true,
+     "err": null
+    },
+    "valid-wildcard": {
+     "ok": true,
+     "err": null
+    },
+    "der-long-length": {
+     "ok": false,
+     "err": "parse: BadDer"
+    },
+    "der-length-leading-zero": {
+     "ok": false,
+     "err": "parse: BadDer"
+    },
+    "der-indefinite-length": {
+     "ok": false,
+     "err": "parse: BadDer"
+    },
+    "der-integer-padding": {
+     "ok": true,
+     "err": null
+    },
+    "der-boolean-01": {
+     "ok": false,
+     "err": "parse: BadDer"
+    },
+    "der-default-false-written": {
+     "ok": true,
+     "err": null
+    },
+    "der-high-tag-for-low": {
+     "ok": false,
+     "err": "parse: BadDer"
+    },
+    "der-oid-padding": {
+     "ok": true,
+     "err": null
+    },
+    "rfc-generalizedtime-2026": {
+     "ok": true,
+     "err": null
+    },
+    "rfc-february-30": {
+     "ok": false,
+     "err": "verify: BadDerTime"
+    },
+    "der-trailing-in-extension": {
+     "ok": false,
+     "err": "parse: BadDer"
+    },
+    "der-trailing-byte": {
+     "ok": false,
+     "err": "parse: TrailingData(Certificate)"
+    },
+    "der-outer-length-leading-zero": {
+     "ok": false,
+     "err": "parse: TrailingData(SignedData)"
+    },
+    "der-outer-indefinite": {
+     "ok": false,
+     "err": "parse: TrailingData(SignedData)"
+    },
+    "rfc-outer-algorithm-differs": {
+     "ok": false,
+     "err": "parse: SignatureAlgorithmMismatch"
+    },
+    "path-unknown-critical-extension": {
+     "ok": false,
+     "err": "parse: UnsupportedCriticalExtension"
+    },
+    "path-duplicate-extension": {
+     "ok": false,
+     "err": "parse: ExtensionValueInvalid"
+    },
+    "path-leaf-as-ca": {
+     "ok": false,
+     "err": "verify: EndEntityUsedAsCa"
+    },
+    "path-length-exceeded": {
+     "ok": false,
+     "err": "verify: PathLenConstraintViolated"
+    },
+    "path-issuer-without-keycertsign": {
+     "ok": true,
+     "err": null
+    },
+    "path-expired-intermediate": {
+     "ok": false,
+     "err": "verify: CertExpired { time: UnixTime(1790510400), not_after: UnixTime(1767225600) }"
+    },
+    "path-leaf-not-yet-valid": {
+     "ok": false,
+     "err": "verify: CertNotValidYet { time: UnixTime(1790510400), not_before: UnixTime(1798761600) }"
+    },
+    "path-client-only-eku": {
+     "ok": false,
+     "err": "verify: RequiredEkuNotFoundContext(RequiredEkuNotFoundContext { required: KeyPurposeId(1.3.6.1.5.5.7.3.1), present: [KeyPurposeId(1.3.6.1.5.5.7.3.2)] })"
+    },
+    "host-other-name": {
+     "ok": false,
+     "err": "name: CertNotValidForName(InvalidNameContext { expected: DnsName(\"other.example\"), presented: [\"DnsName(\\\"test.example\\\")\", \"DnsName(\\\"www.test.example\\\")\", \"DnsName(\\\"*.wild.example\\\")\"] })"
+    },
+    "host-wildcard-two-labels": {
+     "ok": false,
+     "err": "name: CertNotValidForName(InvalidNameContext { expected: DnsName(\"a.b.wild.example\"), presented: [\"DnsName(\\\"test.example\\\")\", \"DnsName(\\\"www.test.example\\\")\", \"DnsName(\\\"*.wild.example\\\")\"] })"
+    },
+    "host-wildcard-bare": {
+     "ok": false,
+     "err": "name: CertNotValidForName(InvalidNameContext { expected: DnsName(\"wild.example\"), presented: [\"DnsName(\\\"test.example\\\")\", \"DnsName(\\\"www.test.example\\\")\", \"DnsName(\\\"*.wild.example\\\")\"] })"
+    },
+    "host-nul-in-name": {
+     "ok": false,
+     "err": "name: CertNotValidForName(InvalidNameContext { expected: DnsName(\"test.example\"), presented: [\"DnsName(\\\"test.example\\0.evil.example\\\")\"] })"
+    },
+    "host-wildcard-partial": {
+     "ok": false,
+     "err": "name: CertNotValidForName(InvalidNameContext { expected: DnsName(\"test.example\"), presented: [\"DnsName(\\\"t*.example\\\")\"] })"
+    },
+    "host-wildcard-tld": {
+     "ok": false,
+     "err": "name: CertNotValidForName(InvalidNameContext { expected: DnsName(\"x.example\"), presented: [\"DnsName(\\\"*.example\\\")\"] })"
+    }
+   }
+  },
+  "Python cryptography": {
+   "version": "cryptography 50.0.0",
+   "verdicts": {
+    "valid": {
+     "ok": true,
+     "err": null
+    },
+    "valid-www": {
+     "ok": true,
+     "err": null
+    },
+    "valid-wildcard": {
+     "ok": true,
+     "err": null
+    },
+    "der-long-length": {
+     "ok": false,
+     "err": "ValueError: error parsing asn1 value: ParseError { kind: InvalidLength, location: [\"Certificate::tbs_cert\", \"TbsCertificate::version\"] }"
+    },
+    "der-length-leading-zero": {
+     "ok": false,
+     "err": "ValueError: error parsing asn1 value: ParseError { kind: InvalidLength, location: [\"Certificate::tbs_cert\", \"TbsCertificate::issuer\"] }"
+    },
+    "der-indefinite-length": {
+     "ok": false,
+     "err": "ValueError: error parsing asn1 value: ParseError { kind: InvalidLength, location: [\"Certificate::tbs_cert\", \"TbsCertificate::validity\"] }"
+    },
+    "der-integer-padding": {
+     "ok": false,
+     "err": "ValueError: error parsing asn1 value: ParseError { kind: InvalidValue, location: [\"Certificate::tbs_cert\", \"TbsCertificate::serial\"] }"
+    },
+    "der-boolean-01": {
+     "ok": false,
+     "err": "ValueError: error parsing asn1 value: ParseError { kind: InvalidValue, location: [\"Certificate::tbs_cert\", \"TbsCertificate::raw_extensions\", 0, \"Extension::critical\"] }"
+    },
+    "der-default-false-written": {
+     "ok": false,
+     "err": "ValueError: error parsing asn1 value: ParseError { kind: EncodedDefault, location: [\"Certificate::tbs_cert\", \"TbsCertificate::raw_extensions\", 3, \"Extension::critical\"] }"
+    },
+    "der-high-tag-for-low": {
+     "ok": false,
+     "err": "ValueError: error parsing asn1 value: ParseError { kind: InvalidTag, location: [\"Certificate::tbs_cert\", \"TbsCertificate::serial\"] }"
+    },
+    "der-oid-padding": {
+     "ok": false,
+     "err": "ValueError: error parsing asn1 value: ParseError { kind: InvalidValue, location: [\"TbsCertificate::subject\", 0, 0, \"AttributeTypeValue::type_id\"] }"
+    },
+    "rfc-generalizedtime-2026": {
+     "ok": false,
+     "err": "VerificationError: validation failed: validity dates between 1950 and 2049 must be UtcTime (encountered processing <Certificate(subject=<Name(CN=test.example,O=lean-x509 test PKI,C=US)>, ...)>)"
+    },
+    "rfc-february-30": {
+     "ok": false,
+     "err": "ValueError: error parsing asn1 value: ParseError { kind: InvalidValue, location: [\"Certificate::tbs_cert\", \"TbsCertificate::validity\", \"Validity::not_before\", \"Time::UtcTime\"] }"
+    },
+    "der-trailing-in-extension": {
+     "ok": false,
+     "err": "VerificationError: validation failed: ASN.1 parsing error: extra data (encountered processing <Certificate(subject=<Name(CN=test.example,O=lean-x509 test PKI,C=US)>, ...)>)"
+    },
+    "der-trailing-byte": {
+     "ok": false,
+     "err": "ValueError: error parsing asn1 value: ParseError { kind: ExtraData }"
+    },
+    "der-outer-length-leading-zero": {
+     "ok": false,
+     "err": "ValueError: error parsing asn1 value: ParseError { kind: InvalidLength }"
+    },
+    "der-outer-indefinite": {
+     "ok": false,
+     "err": "ValueError: error parsing asn1 value: ParseError { kind: InvalidLength }"
+    },
+    "rfc-outer-algorithm-differs": {
+     "ok": false,
+     "err": "VerificationError: validation failed: mismatch between signatureAlgorithm and SPKI algorithm (encountered processing <Certificate(subject=<Name(CN=test.example,O=lean-x509 test PKI,C=US)>, ...)>)"
+    },
+    "path-unknown-critical-extension": {
+     "ok": false,
+     "err": "VerificationError: validation failed: invalid extension: 1.3.6.1.4.1.55555.1: certificate contains unaccounted-for critical extensions (encountered processing <Certificate(subject=<Name(CN=test.example,O=lean-x509 test PKI,C=US)>, ...)>)"
+    },
+    "path-duplicate-extension": {
+     "ok": false,
+     "err": "VerificationError: validation failed: invalid extension: 2.5.29.17: duplicate extension"
+    },
+    "path-leaf-as-ca": {
+     "ok": false,
+     "err": "VerificationError: validation failed: candidates exhausted: basicConstraints.cA must be asserted in a CA certificate"
+    },
+    "path-length-exceeded": {
+     "ok": false,
+     "err": "VerificationError: validation failed: candidates exhausted: path length constraint violated"
+    },
+    "path-issuer-without-keycertsign": {
+     "ok": false,
+     "err": "VerificationError: validation failed: candidates exhausted: keyUsage.keyCertSign must be asserted in a CA certificate"
+    },
+    "path-expired-intermediate": {
+     "ok": false,
+     "err": "VerificationError: validation failed: candidates exhausted: cert is not valid at validation time"
+    },
+    "path-leaf-not-yet-valid": {
+     "ok": false,
+     "err": "VerificationError: validation failed: cert is not valid at validation time (encountered processing <Certificate(subject=<Name(CN=test.example,O=lean-x509 test PKI,C=US)>, ...)>)"
+    },
+    "path-client-only-eku": {
+     "ok": false,
+     "err": "VerificationError: validation failed: required EKU not found (encountered processing <Certificate(subject=<Name(CN=test.example,O=lean-x509 test PKI,C=US)>, ...)>)"
+    },
+    "host-other-name": {
+     "ok": false,
+     "err": "VerificationError: validation failed: leaf certificate has no matching subjectAltName (encountered processing <Certificate(subject=<Name(CN=test.example,O=lean-x509 test PKI,C=US)>, ...)>)"
+    },
+    "host-wildcard-two-labels": {
+     "ok": false,
+     "err": "VerificationError: validation failed: leaf certificate has no matching subjectAltName (encountered processing <Certificate(subject=<Name(CN=test.example,O=lean-x509 test PKI,C=US)>, ...)>)"
+    },
+    "host-wildcard-bare": {
+     "ok": false,
+     "err": "VerificationError: validation failed: leaf certificate has no matching subjectAltName (encountered processing <Certificate(subject=<Name(CN=test.example,O=lean-x509 test PKI,C=US)>, ...)>)"
+    },
+    "host-nul-in-name": {
+     "ok": false,
+     "err": "VerificationError: validation failed: leaf certificate has no matching subjectAltName (encountered processing <Certificate(subject=<Name(CN=test.example,O=lean-x509 test PKI,C=US)>, ...)>)"
+    },
+    "host-wildcard-partial": {
+     "ok": false,
+     "err": "VerificationError: validation failed: leaf certificate has no matching subjectAltName (encountered processing <Certificate(subject=<Name(CN=test.example,O=lean-x509 test PKI,C=US)>, ...)>)"
+    },
+    "host-wildcard-tld": {
+     "ok": true,
+     "err": null
+    }
+   }
+  },
+  "Apple Security": {
+   "version": "macOS 26.6.2",
+   "verdicts": {
+    "valid": {
+     "ok": true,
+     "err": null
+    },
+    "valid-www": {
+     "ok": true,
+     "err": null
+    },
+    "valid-wildcard": {
+     "ok": true,
+     "err": null
+    },
+    "der-long-length": {
+     "ok": false,
+     "err": "SecCertificateCreateWithData refused the leaf"
+    },
+    "der-length-leading-zero": {
+     "ok": false,
+     "err": "SecCertificateCreateWithData refused the leaf"
+    },
+    "der-indefinite-length": {
+     "ok": false,
+     "err": "SecCertificateCreateWithData refused the leaf"
+    },
+    "der-integer-padding": {
+     "ok": true,
+     "err": null
+    },
+    "der-boolean-01": {
+     "ok": false,
+     "err": "SecCertificateCreateWithData refused the leaf"
+    },
+    "der-default-false-written": {
+     "ok": true,
+     "err": null
+    },
+    "der-high-tag-for-low": {
+     "ok": false,
+     "err": "SecCertificateCreateWithData refused the leaf"
+    },
+    "der-oid-padding": {
+     "ok": true,
+     "err": null
+    },
+    "rfc-generalizedtime-2026": {
+     "ok": true,
+     "err": null
+    },
+    "rfc-february-30": {
+     "ok": false,
+     "err": "SecCertificateCreateWithData refused the leaf"
+    },
+    "der-trailing-in-extension": {
+     "ok": true,
+     "err": null
+    },
+    "der-trailing-byte": {
+     "ok": true,
+     "err": null
+    },
+    "der-outer-length-leading-zero": {
+     "ok": false,
+     "err": "SecCertificateCreateWithData refused the leaf"
+    },
+    "der-outer-indefinite": {
+     "ok": false,
+     "err": "SecCertificateCreateWithData refused the leaf"
+    },
+    "rfc-outer-algorithm-differs": {
+     "ok": true,
+     "err": null
+    },
+    "path-unknown-critical-extension": {
+     "ok": false,
+     "err": "\u201ctest.example\u201d certificate is not standards compliant"
+    },
+    "path-duplicate-extension": {
+     "ok": false,
+     "err": "\u201ctest.example\u201d certificate is not standards compliant"
+    },
+    "path-leaf-as-ca": {
+     "ok": false,
+     "err": "\u201ctest.example\u201d certificate is not standards compliant"
+    },
+    "path-length-exceeded": {
+     "ok": false,
+     "err": "\u201clean-x509 Test Sub CA\u201d certificate is not standards compliant"
+    },
+    "path-issuer-without-keycertsign": {
+     "ok": false,
+     "err": "\u201clean-x509 Test CA no certSign\u201d certificate is not permitted for this usage"
+    },
+    "path-expired-intermediate": {
+     "ok": false,
+     "err": "\u201clean-x509 Test CA expired\u201d certificate is expired"
+    },
+    "path-leaf-not-yet-valid": {
+     "ok": false,
+     "err": "\u201ctest.example\u201d certificate is expired"
+    },
+    "path-client-only-eku": {
+     "ok": false,
+     "err": "\u201ctest.example\u201d certificate is not permitted for this usage"
+    },
+    "host-other-name": {
+     "ok": false,
+     "err": "\u201ctest.example\u201d certificate name does not match input"
+    },
+    "host-wildcard-two-labels": {
+     "ok": false,
+     "err": "\u201ctest.example\u201d certificate name does not match input"
+    },
+    "host-wildcard-bare": {
+     "ok": false,
+     "err": "\u201ctest.example\u201d certificate name does not match input"
+    },
+    "host-nul-in-name": {
+     "ok": false,
+     "err": "\u201ctest.example\u201d certificate name does not match input"
+    },
+    "host-wildcard-partial": {
+     "ok": false,
+     "err": "\u201ctest.example\u201d certificate name does not match input"
+    },
+    "host-wildcard-tld": {
+     "ok": false,
+     "err": "\u201ctest.example\u201d certificate name does not match input"
+    }
+   }
+  }
+ }
+}

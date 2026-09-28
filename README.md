@@ -79,6 +79,33 @@ different bytes, which is the malleability DER exists to rule out.
 | one letter of a DNS name changed | invalid | parses, fails verify |
 | leaf rewritten to claim cA = TRUE | invalid | parses, fails verify |
 
+### Other libraries
+
+`test/crosscheck/` runs a second corpus through nine X.509 implementations on the same machine: this
+project, OpenSSL 3.6 (default and `-x509_strict`), LibreSSL, GnuTLS, NSS, Go `crypto/x509`, rustls-webpki,
+Python `cryptography` and Apple's Security framework. It builds a test CA and 28 certificates, each with
+exactly one flaw and a valid signature, so a library that accepts one accepted the flaw itself
+(the Frankencerts method). Every library accepts the three controls and refuses the path-validation
+basics (leaf as CA, path length, expiry, unknown critical extensions). They differ on DER strictness:
+[the full table](test/crosscheck/RESULTS.md) shows who accepts what.
+
+| Library | Flaws accepted (of 28) |
+| --- | --- |
+| Lean (this project) | 0 |
+| OpenSSL | 11 |
+| OpenSSL -x509_strict | 11 |
+| LibreSSL | 11 (of 23 it can check) |
+| GnuTLS | 11 |
+| NSS | 9 (of 23 it can check) |
+| Go | 3 |
+| rustls-webpki | 5 |
+| Python cryptography | 0 |
+| Apple Security | 7 |
+
+```sh
+python3 test/crosscheck/run.py   # needs Go, Rust, Swift, GnuTLS and NSS installed
+```
+
 ## Try it
 
 1. Install [Lean Studio](https://github.com/keithadler/leanstudio) (on a Mac: `brew install --cask keithadler/tap/lean-studio`).
