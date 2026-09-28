@@ -3,7 +3,7 @@
 Lean's kernel validates a real certificate chain, from the raw DER bytes to the RSA signatures, and the
 parser underneath is proved to accept exactly one encoding of every certificate.
 
-![The X.509 widget: the chain with every check, the DER tree Lean parsed, and the tamper sweep](docs/widget.png)
+![The X.509 widget in Lean Studio's Infoview: the chain with every check, and the DER tree Lean parsed](docs/lean-studio.png)
 
     *.github.io  ←  Let's Encrypt YR1  ←  ISRG Root YR  ←  ISRG Root X1
 
@@ -87,7 +87,10 @@ different bytes, which is the malleability DER exists to rule out.
    **Infoview** tab.
 
 It works the same in VS Code with the Lean 4 extension. Without Lean there is a
-[browser version](https://keithadler.github.io/lean-x509/) of the widget, fed the data Lean computes.
+[browser version](https://keithadler.github.io/lean-x509/) of the widget, fed the data Lean computes,
+including the tamper sweep:
+
+![The whole widget: the chain, the DER tree, the tamper sweep and the theorems](docs/widget.png)
 
 ```sh
 lake build                       # the proofs, including the kernel checking the chain
