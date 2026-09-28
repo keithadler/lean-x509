@@ -8,7 +8,7 @@ import X509.Rsa
     Certificate  ::=  SEQUENCE  { tbsCertificate, signatureAlgorithm, signatureValue BIT STRING }
 
 `decodeCert` reads the DER tree into the fields the rest of the project uses. It is strict where RFC 5280
-and DER are strict: version 3 or an omitted version (v1), a positive serial of at most 20 bytes, the inner
+and DER are strict: version 3 or an omitted version (v1), a serial of at most 20 bytes, the inner
 and outer signature algorithms byte-identical, extensions only in v3, no extension twice, no critical
 extension it does not understand, and DER's rule that a default value (a `critical` flag of FALSE, a `cA`
 of FALSE) is left out rather than written.
@@ -19,8 +19,8 @@ The bytes a signature covers are the exact bytes of `tbsCertificate` as they app
 
 namespace X509
 
-/-- An object identifier, kept as its DER contents. `Oid.lean`-style arcs are not needed for comparing:
-DER gives each OID one encoding, so equal OIDs have equal bytes. -/
+/-- An object identifier, kept as its DER contents. The decoder checks each one with `oidOk`, and a
+well-formed OID has one encoding, so equal OIDs have equal bytes. -/
 abbrev Oid := List Nat
 
 namespace Oid
@@ -37,6 +37,16 @@ def organization : Oid := [0x55, 0x04, 0x0a]
 def country : Oid := [0x55, 0x04, 0x06]
 end Oid
 
+/-- The DER contents of an OBJECT IDENTIFIER, well formed: base-128 groups, each ending in a byte below
+`0x80`, none starting with the padding byte `0x80`. Such an OID has exactly one encoding, which is why
+comparing OIDs by their bytes is sound. -/
+def oidOk (o : List Nat) : Bool :=
+  o != [] && o.all (· < 256) && go true o
+where
+  go (start : Bool) : List Nat → Bool
+    | [] => start
+    | b :: bs => if start && b == 0x80 then false else go (b < 128) bs
+
 /-- One attribute of a name: its type, the string type it was written in, and the string's bytes. -/
 abbrev Attr := Oid × Nat × List Nat
 
@@ -48,7 +58,7 @@ def stringTag (t : Nat) : Bool :=
   t == 0x0C || t == 0x13 || t == 0x16 || t == 0x14 || t == 0x1E || t == 0x1C
 
 def decodeAttr : Node → Option Attr
-  | .cons 0x30 [.prim 0x06 oid, .prim t v] => if stringTag t then some (oid, t, v) else none
+  | .cons 0x30 [.prim 0x06 oid, .prim t v] => if stringTag t && oidOk oid then some (oid, t, v) else none
   | _ => none
 
 def decodeRdn : Node → Option (List Attr)
@@ -67,7 +77,8 @@ inductive PublicKey where
 /-- SubjectPublicKeyInfo. An RSA key is itself DER inside the BIT STRING: `SEQUENCE { n, e }`. -/
 def decodeKey : Node → Option PublicKey
   | .cons 0x30 [.cons 0x30 (.prim 0x06 alg :: params), .prim 0x03 (0 :: keyBytes)] =>
-    if alg = Oid.rsaEncryption then
+    if !oidOk alg then none
+    else if alg = Oid.rsaEncryption then
       match params, parse keyBytes with
       | [.prim 0x05 []], some (.cons 0x30 [.prim 0x02 n, .prim 0x02 e]) =>
         match decodeUInt n, decodeUInt e with
@@ -85,8 +96,9 @@ structure Ext where
 
 /-- An extension. `critical` is written only when TRUE: DER leaves out a value equal to its default. -/
 def decodeExt : Node → Option Ext
-  | .cons 0x30 [.prim 0x06 oid, .prim 0x04 v] => some ⟨oid, false, v⟩
-  | .cons 0x30 [.prim 0x06 oid, .prim 0x01 [0xFF], .prim 0x04 v] => some ⟨oid, true, v⟩
+  | .cons 0x30 [.prim 0x06 oid, .prim 0x04 v] => if oidOk oid then some ⟨oid, false, v⟩ else none
+  | .cons 0x30 [.prim 0x06 oid, .prim 0x01 [0xFF], .prim 0x04 v] =>
+    if oidOk oid then some ⟨oid, true, v⟩ else none
   | _ => none
 
 /-- basicConstraints: `(cA, pathLenConstraint)`. A path length without `cA` means nothing and is refused. -/
@@ -117,9 +129,16 @@ def decodeEku (v : List Nat) : Option (List Oid) :=
   match parse v with
   | some (.cons 0x30 (n :: ns)) =>
     (n :: ns).mapM fun
-      | .prim 0x06 o => some o
+      | .prim 0x06 o => if oidOk o then some o else none
       | _ => none
   | _ => none
+
+/-- DER contents of an INTEGER of either sign: not empty, bytes, and no redundant leading `0x00` or
+`0xFF`. -/
+def minimalInt : List Nat → Bool
+  | [] => false
+  | [b] => b < 256
+  | b :: c :: rest => (b :: c :: rest).all (· < 256) && !(b == 0 && c < 128) && !(b == 255 && 128 ≤ c)
 
 /-- No value twice. -/
 def distinct {α} [DecidableEq α] : List α → Bool
@@ -136,7 +155,10 @@ structure Cert where
   tbs : List Nat
   /-- 0 for v1, 2 for v3. -/
   version : Nat
-  serial : Nat
+  /-- The serial number's DER contents. RFC 5280 wants it positive, but trust stores still carry roots
+  with serial 0 or a negative serial, and §4.1.2.2 asks clients to handle them, so any minimal
+  two's-complement integer of at most 20 bytes is accepted. -/
+  serial : List Nat
   /-- The DER of the signature algorithm, inner and outer being byte-identical. -/
   sigAlg : List Nat
   issuer : Name
@@ -171,10 +193,8 @@ def decodeValidity : Node → Option (Nat × Nat)
 /-- Everything after the version: the fields common to v1 and v3. -/
 def decodeTbsBody (tbs : Node) (version : Nat) (serial sigAlg issuer validity subject spki : Node)
     (extNodes : List Node) : Option (Cert × Node) := do
-  let .prim 0x02 s := serial | none
-  if s.length > 20 then none
-  let sn ← decodeUInt s
-  if sn = 0 then none
+  let .prim 0x02 sn := serial | none
+  if sn.length > 20 || !minimalInt sn then none
   let iss ← decodeName issuer
   let (nb, na) ← decodeValidity validity
   let sub ← decodeName subject
