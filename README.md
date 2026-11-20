@@ -15,7 +15,7 @@ modulo a 2048- or 4096-bit key, compares the result with the one correctly padde
 names, dates, CA flags, key usages, path lengths and the host name. No compiled code is involved, and
 Tenet, Lean Studio's independent kernel, checks the same proofs again.
 
-Everything is in core Lean 4.34, no Mathlib, so it builds in a few minutes (most of it the kernel
+Everything is in core Lean 4.36, no Mathlib, so it builds in a few minutes (most of it the kernel
 checking the chain).
 
 ## What is proved
